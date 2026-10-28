@@ -1,0 +1,54 @@
+/* composer.css — el campo para escribir (se usa en la pantalla principal y en el historial). */
+
+.composer {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 6px 6px 20px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.composer input {
+  flex: 1;
+  min-width: 0;
+  height: var(--tap);
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-size: 16px;               /* 16 px evita el zoom automático en iOS */
+}
+
+.composer input::placeholder {
+  color: var(--muted);
+  opacity: 1;
+}
+
+.composer:focus-within {
+  border-color: var(--violet-soft);
+}
+
+.send {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: var(--tap);
+  height: var(--tap);
+  border-radius: 50%;
+  background: var(--accent-solid);
+  color: var(--on-accent);
+}
+
+.send svg {
+  width: 22px;
+  height: 22px;
+}
+
+.send:disabled { opacity: .35; }
+
+@media (hover: hover) {
+  .send:not(:disabled):hover { background: var(--accent-solid-hover); }
+}

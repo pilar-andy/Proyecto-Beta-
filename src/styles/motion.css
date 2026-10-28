@@ -1,0 +1,128 @@
+/* ==========================================================================
+   motion.css — TODO el movimiento de la app vive aquí.
+   Reglas (heredadas de Deep Op, ver docs/animation-rules.md):
+   · solo transform / translate / scale / rotate / opacity
+   · tiempos y curvas salen de tokens.css
+   · todo el movimiento va dentro de prefers-reduced-motion: no-preference;
+     con «reducir movimiento» solo hay fundidos cortos (bloque final).
+   ========================================================================== */
+
+@media (prefers-reduced-motion: no-preference) {
+
+  /* ---------- Cambio entre Interfaz 1 e Interfaz 2 ---------- */
+  .track { transition: translate var(--dur-pane) var(--ease-out); }
+  .track.is-dragging { transition: none; will-change: translate; }
+
+  /* ---------- Hojas (historial y ajustes) ---------- */
+  .sheet {
+    transition:
+      translate var(--dur-sheet-close) var(--ease-in-out),
+      visibility 0s linear var(--dur-sheet-close);
+  }
+  .sheet.is-open {
+    transition:
+      translate var(--dur-sheet-open) var(--ease-out),
+      visibility 0s;
+  }
+  .scrim { transition: opacity var(--dur-sheet-close) var(--ease-standard); }
+  .scrim.is-open { transition-duration: var(--dur-sheet-open); }
+
+  /* ---------- Texto principal: entra con un leve ascenso ---------- */
+  .swap { animation: rise var(--dur-base) var(--ease-out) both; }
+  .message-body.swap { animation-delay: var(--stagger); }
+  .message-hint.swap { animation-delay: calc(var(--stagger) * 2); }
+
+  /* ---------- El mensaje enviado se desvanece hacia arriba ---------- */
+  .ghost { animation: ghost-out var(--dur-ghost) var(--ease-in-out) forwards; }
+
+  /* ---------- Imagen o video central, mientras el agente trabaja ---------- */
+  .hero.is-working .hero-media {
+    animation: breathe 3.2s var(--ease-in-out) infinite alternate;
+  }
+
+  .status[data-phase="working"] .status-dot {
+    animation: blink 1.1s var(--ease-in-out) infinite alternate;
+  }
+
+  /* ---------- Historial ---------- */
+  .bubble.is-new { animation: rise var(--dur-base) var(--ease-out) both; }
+  .bubble--working i { animation: blink 1s var(--ease-in-out) infinite alternate; }
+  .bubble--working i:nth-child(2) { animation-delay: 160ms; }
+  .bubble--working i:nth-child(3) { animation-delay: 320ms; }
+
+  /* ---------- Botones: respuesta al pulsar y puntos de paginación ---------- */
+  .icon-btn,
+  .btn,
+  .send { transition: scale var(--dur-instant) var(--ease-out), background-color var(--dur-fast) var(--ease-standard); }
+  .icon-btn:active,
+  .btn:active,
+  .send:not(:disabled):active { scale: .93; }
+
+  .dot::before { transition: scale var(--dur-base) var(--ease-spring); }
+
+  /* ---------- Diagrama de estructura ---------- */
+  .d-halo { scale: .6; transition: scale var(--dur-base) var(--ease-out), opacity var(--dur-base) var(--ease-standard); }
+  .d-node[data-active="true"] .d-halo { scale: 1; }
+
+  .d-core-ring { transition: opacity var(--dur-base) var(--ease-standard); }
+  .d-core[data-active="true"] .d-core-ring { animation: pulse 1.6s var(--ease-in-out) infinite alternate; }
+
+  .d-orbit { transition: opacity var(--dur-base) var(--ease-standard); }
+  .d-orbit[data-on="true"] { animation: spin 7s linear infinite; }   /* giro continuo: único uso de linear */
+
+  .step { transition: color var(--dur-base) var(--ease-standard); }
+
+  /* ---------- Fotogramas ---------- */
+  @keyframes rise {
+    from { opacity: 0; translate: 0 10px; }
+    to   { opacity: 1; translate: 0 0; }
+  }
+  @keyframes ghost-out {
+    from { opacity: 1; translate: 0 0; scale: 1; }
+    to   { opacity: 0; translate: 0 -42px; scale: .96; }
+  }
+  @keyframes breathe {
+    from { scale: 1; }
+    to   { scale: 1.045; }
+  }
+  @keyframes blink {
+    from { opacity: .35; }
+    to   { opacity: 1; }
+  }
+  @keyframes pulse {
+    from { scale: 1; }
+    to   { scale: 1.3; }
+  }
+  @keyframes spin {
+    to { rotate: 360deg; }
+  }
+}
+
+/* ==========================================================================
+   Movimiento reducido: sin desplazamientos, escalas ni animaciones continuas.
+   Solo fundidos cortos (opacidad).
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .pane { transition: opacity var(--dur-fade) var(--ease-standard); }
+  .pane[inert] { opacity: 0; }
+
+  .sheet {
+    translate: 0 0;
+    opacity: 0;
+    transition:
+      opacity var(--dur-fade) var(--ease-standard),
+      visibility 0s linear var(--dur-fade);
+  }
+  .sheet.is-open {
+    opacity: 1;
+    transition: opacity var(--dur-fade) var(--ease-standard), visibility 0s;
+  }
+  .scrim { transition: opacity var(--dur-fade) var(--ease-standard); }
+
+  .swap { animation: fade-in var(--dur-fade) var(--ease-standard) both; }
+  .bubble.is-new { animation: fade-in var(--dur-fade) var(--ease-standard) both; }
+  .ghost { animation: fade-out var(--dur-fade) var(--ease-standard) forwards; }
+
+  @keyframes fade-in  { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes fade-out { from { opacity: 1; } to { opacity: 0; } }
+}

@@ -1,0 +1,100 @@
+/* ==========================================================================
+   tokens.css — única fuente de verdad de valores de diseño.
+   Colores, medidas, tiempos y curvas. Nada de reglas aquí.
+
+   Reutilizado de Deep Op (solo lo necesario): violeta y azul de acento,
+   tipografía Outfit, estructura «panel dentro de marco», radios y la
+   familia de curvas y duraciones de movimiento.
+   ========================================================================== */
+
+:root {
+  color-scheme: dark;
+
+  /* ---------- Color: superficies (tema oscuro, por defecto) ---------- */
+  --frame: #000;                        /* marco exterior */
+  --panel: #111214;                     /* panel interior redondeado */
+  --surface: rgba(255, 255, 255, .06);  /* tarjetas y campos sobre el panel */
+  --surface-strong: rgba(255, 255, 255, .10);
+  --surface-solid: #1a1b1f;             /* burbujas del agente, hojas */
+  --line: rgba(255, 255, 255, .10);
+  --scrim: rgba(0, 0, 0, .6);
+
+  /* ---------- Color: texto ---------- */
+  --text: #f4f4f5;
+  --muted: #a4a7ae;
+  --faint: #6c6e74;                     /* solo decorativo: nunca para texto necesario */
+
+  /* ---------- Color: acentos ---------- */
+  --violet: #7c5cff;
+  --violet-soft: #a78bfa;               /* texto e iconos de acento sobre oscuro */
+  --blue: #4fa3f7;
+  --pink: #e84fb4;
+  --accent-solid: #6a4bf0;              /* fondo con texto blanco: contraste ≥ 4,5 */
+  --accent-solid-hover: #7c5cff;
+  --on-accent: #fff;
+  --accent-grad: linear-gradient(135deg, #7c5cff 0%, #4fa3f7 100%);  /* solo decorativo */
+  --core-a: #6a4bf0;                    /* núcleo del diagrama de estructura (texto blanco encima) */
+  --core-b: #3b6fe0;
+  --ok: #5ed39a;
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, .35);
+
+  /* ---------- Tipografía ---------- */
+  --font: "Outfit", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --fs-label: 11px;                     /* etiquetas diminutas en mayúsculas */
+  --fs-body: 17px;
+  --fs-title: clamp(40px, 11vw, 60px);  /* título grande: igual en las dos pantallas */
+
+  /* ---------- Medidas ---------- */
+  --gap: 6px;                           /* margen entre el panel y el borde de la ventana */
+  --app-max: 560px;                     /* ancho máximo de la app en pantallas grandes */
+  --radius-panel: 26px;
+  --radius-card: 18px;
+  --radius-hero: 28px;
+  --radius-sheet: 26px;
+  --tap: 44px;                          /* tamaño mínimo cómodo de un botón táctil */
+
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+
+  /* ---------- Movimiento: duraciones ----------
+     Regla de Deep Op: lo que entra es más lento que lo que sale. */
+  --dur-instant: 100ms;                 /* respuesta al pulsar */
+  --dur-fast: 150ms;                    /* color, foco */
+  --dur-base: 240ms;                    /* elementos pequeños que aparecen */
+  --dur-pane: 420ms;                    /* cambio entre Interfaz 1 y 2 */
+  --dur-sheet-open: 380ms;              /* hojas (historial, ajustes) al abrir */
+  --dur-sheet-close: 260ms;             /* y al cerrar */
+  --dur-ghost: 700ms;                   /* el mensaje enviado se desvanece */
+  --dur-fade: 220ms;                    /* fundido corto para movimiento reducido */
+  --stagger: 26ms;
+
+  /* ---------- Movimiento: curvas ---------- */
+  --ease-out: cubic-bezier(.22, 1, .36, 1);
+  --ease-in-out: cubic-bezier(.65, 0, .35, 1);
+  --ease-standard: cubic-bezier(.4, 0, .2, 1);
+  --ease-spring: cubic-bezier(.34, 1.56, .64, 1);
+}
+
+/* ==========================================================================
+   Tema claro. theme.js pone data-theme="light" en <html>. Solo se redefinen
+   valores: ninguna regla.
+   ========================================================================== */
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --frame: #c9ccd3;
+  --panel: #eceef1;
+  --surface: rgba(255, 255, 255, .70);
+  --surface-strong: rgba(255, 255, 255, .95);
+  --surface-solid: #fff;
+  --line: rgba(20, 22, 30, .12);
+  --scrim: rgba(20, 22, 30, .35);
+
+  --text: #14161b;
+  --muted: #545963;
+  --faint: #8a8f99;
+
+  --violet-soft: #5b3fe0;               /* contraste ≥ 4,5 sobre las superficies claras */
+  --ok: #1f8f5d;
+  --shadow-card: 0 4px 24px rgba(30, 30, 60, .12);
+}

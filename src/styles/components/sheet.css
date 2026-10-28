@@ -1,0 +1,136 @@
+/* sheet.css — hojas modales: historial y ajustes. */
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  background: var(--scrim);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.scrim.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.sheet {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100% - 48px);
+  padding: 8px 18px max(14px, var(--safe-bottom));
+  background: var(--panel);
+  border-radius: var(--radius-sheet) var(--radius-sheet) 0 0;
+  border-top: 1px solid var(--line);
+  box-shadow: var(--shadow-card);
+  translate: 0 100%;
+  visibility: hidden;
+}
+
+.sheet.is-open {
+  translate: 0 0;
+  visibility: visible;
+}
+
+.sheet--tall { top: 48px; }
+
+.sheet-grip {
+  flex: none;
+  width: 40px;
+  height: 4px;
+  margin: 0 auto 6px;
+  border-radius: 2px;
+  background: var(--faint);
+  opacity: .6;
+}
+
+.sheet-head {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 0 12px;
+}
+
+.sheet-title {
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -.02em;
+}
+
+/* ---------- Historial ---------- */
+.history {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 4px 0 14px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.history-empty {
+  margin: auto;
+  max-width: 26ch;
+  text-align: center;
+  color: var(--muted);
+}
+
+.bubble {
+  max-width: 84%;
+  padding: 11px 16px;
+  font-size: 16px;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.bubble--user {
+  align-self: flex-end;
+  background: var(--accent-solid);
+  color: var(--on-accent);
+  border-radius: 20px 20px 6px 20px;
+}
+
+.bubble--agent {
+  align-self: flex-start;
+  background: var(--surface-solid);
+  border: 1px solid var(--line);
+  border-radius: 20px 20px 20px 6px;
+}
+
+.bubble--working {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  min-height: 42px;
+}
+
+.bubble--working i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--muted);
+}
+
+/* ---------- Ajustes ---------- */
+.settings-group {
+  display: grid;
+  gap: 8px;
+  padding-bottom: 18px;
+}
+
+.settings-group .label { padding-left: 4px; }
+
+.settings-foot {
+  padding-top: 6px;
+  font-size: 13px;
+  color: var(--muted);
+}

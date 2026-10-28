@@ -1,0 +1,47 @@
+/* message.css — bienvenida, «trabajando» y respuesta: un solo bloque que cambia. */
+
+.message {
+  flex: none;
+  padding: 18px 2px 14px;
+}
+
+.message-title {
+  font-size: var(--fs-title);
+  font-weight: 500;
+  line-height: .98;
+  letter-spacing: -.035em;
+}
+
+.message-body {
+  margin-top: 10px;
+  max-height: 22vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  font-size: var(--fs-body);
+  line-height: 1.45;
+  color: var(--muted);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.message-hint {
+  margin-top: 8px;
+  font-size: 14px;
+  color: var(--violet-soft);
+}
+
+/* El mensaje enviado, justo antes de desaparecer */
+.ghost {
+  position: absolute;
+  z-index: 30;
+  display: block;
+  padding: 0 18px;
+  font-size: 16px;
+  border-radius: 999px;
+  background: var(--accent-solid);
+  color: var(--on-accent);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
+}

@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Proyecto Beta</title>
+  <meta name="description" content="Agente de IA: maqueta de la interfaz (sin API conectada todavía).">
+  <meta name="theme-color" content="#000000">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="src/icons/app/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="src/icons/app/apple-touch-icon.png">
+
+  <!-- Tema antes de pintar: evita el parpadeo oscuro → claro. (theme.js toma el control luego.) -->
+  <script>
+    (function () {
+      try {
+        var pref = JSON.parse(localStorage.getItem('beta.theme') || '"system"');
+        var light = pref === 'light' || (pref === 'system' && matchMedia('(prefers-color-scheme: light)').matches);
+        document.documentElement.dataset.theme = light ? 'light' : 'dark';
+        document.querySelector('meta[name="theme-color"]').content = light ? '#c9ccd3' : '#000000';
+      } catch (e) { /* sin almacenamiento: se queda oscuro */ }
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap">
+
+  <link rel="stylesheet" href="src/styles/tokens.css">
+  <link rel="stylesheet" href="src/styles/base.css">
+  <link rel="stylesheet" href="src/styles/layout.css">
+  <link rel="stylesheet" href="src/styles/components/buttons.css">
+  <link rel="stylesheet" href="src/styles/components/hero.css">
+  <link rel="stylesheet" href="src/styles/components/message.css">
+  <link rel="stylesheet" href="src/styles/components/composer.css">
+  <link rel="stylesheet" href="src/styles/components/sheet.css">
+  <link rel="stylesheet" href="src/styles/components/structure.css">
+  <link rel="stylesheet" href="src/styles/motion.css">
+</head>
+<body>
+  <div class="app">
+    <div class="panel" id="panel">
+
+      <div class="ui" id="ui">
+
+        <header class="topbar">
+          <div class="brand">
+            <svg class="mark" data-icon="mark"></svg>
+            <span class="brand-name">Beta</span>
+          </div>
+          <div class="actions">
+            <button class="icon-btn" id="btnHistory" type="button" aria-haspopup="dialog" aria-label="Historial de mensajes">
+              <svg data-icon="message"></svg>
+            </button>
+            <button class="icon-btn" id="btnSettings" type="button" aria-haspopup="dialog" aria-label="Ajustes">
+              <svg data-icon="settings"></svg>
+            </button>
+          </div>
+        </header>
+
+        <main class="panes" id="panes">
+          <div class="track" id="track">
+
+            <!-- Interfaz 1: pantalla principal -->
+            <section class="pane" id="paneMain" aria-label="Pantalla principal">
+              <div class="pane-head">
+                <span class="label">01 — Agente</span>
+                <span class="label status" id="status" data-phase="idle">
+                  <span class="status-dot" aria-hidden="true"></span>
+                  <span id="statusText">En espera</span>
+                </span>
+              </div>
+
+              <div class="hero" id="hero"></div>
+
+              <div class="message" id="message">
+                <h1 class="message-title" id="msgTitle"></h1>
+                <p class="message-body" id="msgBody"></p>
+                <p class="message-hint" id="msgHint" hidden>Desliza hacia la izquierda para ver la estructura.</p>
+              </div>
+
+              <form class="composer" id="composerMain" autocomplete="off">
+                <label class="sr-only" for="inputMain">Mensaje para el agente</label>
+                <input id="inputMain" type="text" enterkeyhint="send" autocomplete="off" maxlength="2000" placeholder="Escribe un mensaje">
+                <button class="send" type="submit" aria-label="Enviar mensaje" disabled>
+                  <svg data-icon="send"></svg>
+                </button>
+              </form>
+            </section>
+
+            <!-- Interfaz 2: información de la estructura de IA -->
+            <section class="pane" id="paneInfo" aria-label="Estructura de la IA" inert>
+              <div class="pane-head">
+                <span class="label">02 — Estructura</span>
+                <span class="label">Maqueta</span>
+              </div>
+
+              <h2 class="structure-title">Estructura</h2>
+              <p class="structure-lead">Así está montado el agente. Nada está conectado todavía: esto es solo diseño.</p>
+
+              <svg class="diagram" id="diagram" viewBox="0 0 360 280" role="img"
+                   aria-label="Diagrama: el agente en el centro, con entrada, herramientas, salida y memoria a su alrededor"></svg>
+
+              <ol class="steps" id="steps" aria-label="Pasos de la tarea en curso"></ol>
+              <ul class="layers" id="layers" aria-label="Capas de la estructura"></ul>
+            </section>
+
+          </div>
+        </main>
+
+        <nav class="dots" aria-label="Pantallas">
+          <button class="dot" type="button" aria-label="Pantalla principal" aria-current="true"></button>
+          <button class="dot" type="button" aria-label="Estructura (disponible mientras el agente trabaja)" disabled></button>
+        </nav>
+
+      </div>
+
+      <!-- Historial -->
+      <div class="scrim" id="scrimHistory"></div>
+      <section class="sheet sheet--tall" id="sheetHistory" role="dialog" aria-modal="true" aria-labelledby="historyTitle">
+        <div class="sheet-grip" aria-hidden="true"></div>
+        <header class="sheet-head">
+          <h2 class="sheet-title" id="historyTitle">Historial</h2>
+          <button class="icon-btn" type="button" data-close aria-label="Cerrar historial">
+            <svg data-icon="close"></svg>
+          </button>
+        </header>
+        <ol class="history" id="historyList" role="log" aria-label="Mensajes"></ol>
+        <form class="composer" id="composerSheet" autocomplete="off">
+          <label class="sr-only" for="inputSheet">Mensaje para el agente</label>
+          <input id="inputSheet" type="text" enterkeyhint="send" autocomplete="off" maxlength="2000" placeholder="Escribe un mensaje">
+          <button class="send" type="submit" aria-label="Enviar mensaje" disabled>
+            <svg data-icon="send"></svg>
+          </button>
+        </form>
+      </section>
+
+      <!-- Ajustes -->
+      <div class="scrim" id="scrimSettings"></div>
+      <section class="sheet" id="sheetSettings" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+        <div class="sheet-grip" aria-hidden="true"></div>
+        <header class="sheet-head">
+          <h2 class="sheet-title" id="settingsTitle">Ajustes</h2>
+          <button class="icon-btn" type="button" data-close aria-label="Cerrar ajustes">
+            <svg data-icon="close"></svg>
+          </button>
+        </header>
+
+        <form id="settingsForm" onsubmit="return false">
+          <fieldset class="settings-group">
+            <legend class="label">Tema</legend>
+            <div class="seg">
+              <label><input type="radio" name="theme" value="system"><span>Sistema</span></label>
+              <label><input type="radio" name="theme" value="light"><span>Claro</span></label>
+              <label><input type="radio" name="theme" value="dark"><span>Oscuro</span></label>
+            </div>
+          </fieldset>
+
+          <div class="settings-group">
+            <span class="label">Historial</span>
+            <button class="btn btn--ghost btn--danger" id="btnClear" type="button" data-armed="false">Borrar historial</button>
+          </div>
+        </form>
+
+        <p class="settings-foot">Versión 0.1.0 · Maqueta de diseño: aún no hay ninguna API conectada.</p>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Avisos para lectores de pantalla (no se ve) -->
+  <p class="sr-only" id="announce" role="status" aria-live="polite"></p>
+
+  <noscript>Esta app necesita JavaScript.</noscript>
+  <script type="module" src="src/scripts/main.js"></script>
+</body>
+</html>

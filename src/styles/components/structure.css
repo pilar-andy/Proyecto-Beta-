@@ -1,0 +1,175 @@
+/* structure.css — Interfaz 2: información de toda la estructura de IA. */
+
+.structure-title {
+  font-size: var(--fs-title);
+  font-weight: 500;
+  line-height: .98;
+  letter-spacing: -.035em;
+  padding-top: 4px;
+}
+
+.structure-lead {
+  margin-top: 10px;
+  color: var(--muted);
+}
+
+/* ---------- Diagrama ---------- */
+.diagram {
+  width: 100%;
+  max-width: 380px;
+  height: auto;
+  margin: 8px auto 0;
+  overflow: visible;
+}
+
+.d-ring {
+  fill: none;
+  stroke: var(--faint);
+  stroke-width: 1.5;
+  stroke-dasharray: 2 7;
+  stroke-linecap: round;
+}
+
+.d-link {
+  stroke: var(--line);
+  stroke-width: 1.5;
+}
+
+.d-node-dot {
+  fill: var(--panel);
+  stroke: var(--faint);
+  stroke-width: 2;
+}
+
+.d-node[data-active="true"] .d-node-dot {
+  fill: var(--violet);
+  stroke: var(--violet);
+}
+
+.d-halo {
+  fill: var(--violet);
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.d-node[data-active="true"] .d-halo { opacity: .22; }
+
+.d-label {
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 500;
+  fill: var(--muted);
+}
+
+.d-node[data-active="true"] .d-label { fill: var(--text); }
+
+.d-core-ring {
+  fill: var(--violet);
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.d-core[data-active="true"] .d-core-ring { opacity: .25; }
+
+.d-core-text {
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 500;
+  fill: #fff;
+  text-anchor: middle;
+}
+
+.d-orbit {
+  transform-box: view-box;
+  transform-origin: 50% 50%;
+  opacity: 0;
+}
+
+.d-orbit circle { fill: var(--blue); }
+.d-orbit[data-on="true"] { opacity: 1; }
+
+/* ---------- Pasos en curso ---------- */
+.steps {
+  display: grid;
+  gap: 4px;
+  margin-top: 18px;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 36px;
+  color: var(--faint);
+}
+
+.step::before {
+  content: "";
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+}
+
+.step[data-state="done"] { color: var(--muted); }
+.step[data-state="done"]::before {
+  background: currentColor;
+}
+
+.step[data-state="active"] { color: var(--text); }
+.step[data-state="active"]::before {
+  border-color: var(--violet);
+  background: var(--violet);
+}
+
+.step-text {
+  font-size: 16px;
+}
+
+/* ---------- Capas de la estructura ---------- */
+.layers {
+  display: grid;
+  gap: 10px;
+  margin: 18px 0 8px;
+}
+
+.layer {
+  padding: 14px 16px;
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.layer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.layer-name {
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: -.01em;
+}
+
+.layer-tag {
+  flex: none;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.layer-text {
+  margin-top: 6px;
+  font-size: 15px;
+  color: var(--muted);
+}
